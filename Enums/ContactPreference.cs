@@ -2,8 +2,8 @@
 {
     public enum ContactPreference
     {
-        Favorit,
-        Normalan,
-        Blokiran
+        favorit,
+        normalan,
+        blokiran
     }
 }
