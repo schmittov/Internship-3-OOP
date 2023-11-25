@@ -1,8 +1,8 @@
 ﻿using Domaci_3.Classes;
 using Domaci_3.Enums;
-using Domaci_3.Functions;
 using Domaci_3.Functions.FunctionsMenu;
-
+using System.Diagnostics.Contracts;
+using System.Reflection.Metadata;
 
 int menuSelector;
 List<Contact> contacts = new()
@@ -18,9 +18,20 @@ List<Contact> contacts = new()
     new Contact("Daniel",   "Wilson",   "555-4444", ContactPreference.blokiran),
     new Contact("Olivia",   "Moore",    "555-5555", ContactPreference.favorit)
 };
+List<AudioCall> audioCalls = new()
+{
+    new AudioCall(DateTime.Now.AddSeconds(-20), TimeSpan.FromSeconds(5), AudioCallStatus.Zavrsen, contacts[0]),
+    new AudioCall(DateTime.Now.AddSeconds(-40), TimeSpan.FromSeconds(10), AudioCallStatus.Propusten, contacts[1]),
+    new AudioCall(DateTime.Now.AddSeconds(-100), TimeSpan.FromSeconds(7), AudioCallStatus.Zavrsen, contacts[2])
 
+};
 do
 {
+    AudioCall.AudioCallListPrint(contacts, audioCalls);
+    Console.ReadKey();
+    AudioCall.MakeACall(contacts, audioCalls);
+    Console.ReadKey();
+
     Console.Clear();
     do
     {
