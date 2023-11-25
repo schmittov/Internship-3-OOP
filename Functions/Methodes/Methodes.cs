@@ -6,8 +6,9 @@
             {
                 Console.Write("1. Ispis svih poziva\n");
                 Console.Write("2. Kreiranje novog poziva\n");
+                Console.Write("3. Izlaz iz podmenua\n");
             }
-            public static void PrintMenuOptions()
+        public static void PrintMenuOptions()
             {
                 Console.WriteLine("1. Ispis svih kontakata");
                 Console.WriteLine("2. Dodavanje novih kontakata u imenik");
