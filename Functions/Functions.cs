@@ -1,11 +1,7 @@
-﻿using Domaci_3.Classes;
-using Domaci_3.Enums;
-
-namespace Domaci_3.Functions
+﻿namespace Domaci_3.Functions
 {
     public class Functions
     {
-
         public static string NotNull(string stringVariable)
         {
             do
@@ -16,7 +12,6 @@ namespace Domaci_3.Functions
 
             return stringVariable;
         }
-
         public static string GetUserInput(string message)
         {
             string input;
@@ -33,11 +28,9 @@ namespace Domaci_3.Functions
 
             return input;
         }
-
         public static bool ConfirmTheAction()
         {
             string confirm;
-
             confirm = GetUserInput("Napišite 'Da' za potvrdu ili 'Ne' za odbijanje izvršavanja.\n");
             if (confirm.ToLower().Trim() == "da")
                 return true;
