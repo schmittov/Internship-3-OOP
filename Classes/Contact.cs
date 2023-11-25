@@ -1,6 +1,5 @@
 ﻿using Domaci_3.Enums;
 using Domaci_3.Functions.FunctionsMenu;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domaci_3.Classes
@@ -8,12 +7,13 @@ namespace Domaci_3.Classes
     internal class Contact
     {
         public Guid Id { get; }
-        public String FirstName { get; set; }
-        public String LastName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string MobilePhone { get; set; }
         public ContactPreference Preference { get; set; }
 
-        public Contact(String firstName, String lastName, [Phone] string mobilePhone, ContactPreference contactPreference)
+
+        public Contact(string firstName, string lastName, [Phone] string mobilePhone, ContactPreference contactPreference)
         {
             Id = Guid.NewGuid();
             FirstName = firstName;
@@ -21,12 +21,10 @@ namespace Domaci_3.Classes
             MobilePhone = mobilePhone;
             Preference = contactPreference;
         }
-
-        public static bool CheckIsBlocked(ContactPreference preference)
+        public static bool CheckIsNotBlocked(Contact contact)
         {
-            return (preference != ContactPreference.blokiran);
+            return (contact.Preference != ContactPreference.blokiran);
         }
-
 
         public static void PrintContacts(List<Contact> contacts)
         {
@@ -49,7 +47,6 @@ namespace Domaci_3.Classes
 
             Enum.TryParse<ContactPreference>(newPreference, out ContactPreference novaPreferenca);
                 
-
             foreach (Contact contact in contacts)
             {
                 if (phoneNumber.Equals(contact.MobilePhone))
@@ -68,7 +65,7 @@ namespace Domaci_3.Classes
         }
         public static void DeleteContact(List<Contact> contacts)
         {
-            Contact.PrintContacts(contacts);
+            PrintContacts(contacts);
             string firstName, lastName;
             firstName = Functions.Functions.GetUserInput("Unesi ime kontakta: ").ToLower();
             lastName = Functions.Functions.GetUserInput("Unesi prezime kontakta: ").ToLower();
@@ -81,7 +78,7 @@ namespace Domaci_3.Classes
                 {
                     contacts.Remove(deletedContact);
                     Console.WriteLine("Ažurirani kontakti.");
-                    Contact.PrintContacts(contacts);
+                    PrintContacts(contacts);
                 }
                 else
                 {
@@ -126,11 +123,14 @@ namespace Domaci_3.Classes
         }
         public static void SelectMenuOption(List<Contact> contacts, int x)
         {
-            if (x == 1)         PrintContacts(contacts);
-            else if (x == 2)    AddNewContact(contacts);
-            else if (x == 3)    DeleteContact(contacts);
-            else if (x == 4)    EditContactPreference(contacts);
-            else if (x == 5)    Methode.PrintSubMenuOptions();
+            if (x == 1) PrintContacts(contacts);
+            else if (x == 2) AddNewContact(contacts);
+            else if (x == 3) DeleteContact(contacts);
+            else if (x == 4) EditContactPreference(contacts);
+            else if (x == 5)
+            {
+                Methode.PrintSubMenuOptions();
+            }
         }
     }
 }
