@@ -1,13 +1,8 @@
 ﻿using Domaci_3.Enums;
-using Domaci_3.Classes;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 
 namespace Domaci_3.Classes
 {
-    internal class AudioCall
+    public class AudioCall
     {
         public Guid Id { get; }
         public DateTime CallConnectionTime { get; set; }
@@ -24,44 +19,62 @@ namespace Domaci_3.Classes
             Contact = contact;
         }
 
-        public static void AudioCallStatusChanger(DateTime callConnectionTime, TimeSpan duration)
-        {
-
-            if (callConnectionTime + duration > DateTime.Now) { }
-            else if (callConnectionTime + duration <= DateTime.Now) { }
-        }
-
         public static bool CheckForOtherCallsInProgress(List<AudioCall> audioCalls)
         {
             int i=0;
             foreach(AudioCall audioCall in audioCalls) 
             { 
-                if(audioCall.CallConnectionTime + audioCall.Duration < DateTime.Now)
+                if((audioCall.CallConnectionTime.Add(audioCall.Duration)) > DateTime.Now)
                 {
                     i++;
                 } 
             }
             if (i > 0)
             {
+                Console.WriteLine("Nemoze");
                 return false;
             }
             else
             {
+                Console.WriteLine("Moze");
                 return true;
             }
         }
-        public static void AudioCallListPrint(List<Contact> contacts, List<AudioCall> audioCalls)
+        public static void AllAudioCallsPrint(List<Contact> contacts, List<AudioCall> audioCalls)
         {
-            Console.WriteLine("| Ime     | Prezime   |   Broj    |   Vrijeme spajanja   | Trajanje |");
-            Console.WriteLine("|---------|-----------|-----------|----------------------|----------|");
-            foreach (AudioCall audioCall in audioCalls)
+            Console.WriteLine("|  Ime    | Prezime   |   Broj    |   Vrijeme spajanja  | Trajanje |");
+            Console.WriteLine("|---------|-----------|-----------|---------------------|----------|");
+
+            foreach (var audioCall in audioCalls)
             {              
                 Console.WriteLine($"| {audioCall.Contact.FirstName,-7} | {audioCall.Contact.LastName,-9} | {audioCall.Contact.MobilePhone,-9} | {audioCall.CallConnectionTime,-15} | {audioCall.Duration,-8} |");
+                //Console.WriteLine("zavrsetak"+audioCall.CallConnectionTime.Add(audioCall.Duration));
+            }
+            Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
+            Console.ReadKey();
+        }
+
+        public static void ChoosenContactAllAudioCallsPrint(List<Contact> contacts, List<AudioCall> audioCalls)
+        {
+            Console.WriteLine("Odaberite kontakt");
+            Contact.PrintContacts(contacts);
+
+            string firstName = Functions.Functions.GetUserInput("Unesi ime kontakta: ").ToLower();
+            string lastName = Functions.Functions.GetUserInput("Unesi prezime kontakta: ").ToLower();
+            Contact choosenContact = contacts.Find(contact => (contact.FirstName + contact.LastName).ToLower() == (firstName + lastName));
+            var sortedCalls = audioCalls.OrderBy(call => call.CallConnectionTime).ToList();
+            foreach (var sortedCall in sortedCalls)
+            {
+                if (choosenContact == sortedCall.Contact)
+                {
+                    Console.WriteLine($"| {sortedCall.Contact.FirstName,-7} | {sortedCall.Contact.LastName,-9} | {sortedCall.Contact.MobilePhone,-9} | {sortedCall.CallConnectionTime,-15} | {sortedCall.Duration,-8} |");
+
+                }
             }
         }
 
 
-        public static AudioCall MakeACall(List<Contact> contacts, List<AudioCall> audioCalls)
+        public static void MakeACall(List<Contact> contacts, List<AudioCall> audioCalls)
         {
             Contact.PrintContacts(contacts);
 
@@ -72,9 +85,12 @@ namespace Domaci_3.Classes
             
             if (Contact.CheckIsNotBlocked(callingContact))
             {
-                if (CheckForOtherCallsInProgress(audioCalls))
+                if (!CheckForOtherCallsInProgress(audioCalls))
                 {
-                    return null;
+                    Console.WriteLine("Drugi poziv je u tijeku, pokušajte kasnije.");
+                    Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
+                    Console.ReadKey();
+                    //return null;
                 }
                 else
                 {
@@ -85,16 +101,22 @@ namespace Domaci_3.Classes
 
 
                     AudioCall theMostNewCall = new AudioCall(newCallConnectionTime, randomDurationTime, AudioCallStatus.Zavrsen, callingContact);
-                    Console.WriteLine("Poziv je uspješno stvoren.");
-                    return theMostNewCall;
-
+                    audioCalls.Add(theMostNewCall);
+                    Console.WriteLine("Novi poziv stvoren.");
+                    Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
+                    Console.ReadKey();
+                    //return theMostNewCall;
                 }    
             }
             else
             {
-                Console.WriteLine("Kontakt je blokiran");
-                return null;
+                Console.WriteLine("Kontakt je blokiran, odblokiraj te ga");
+                Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
+                Console.ReadKey();
+                //return null;
+
             }
+            
         }
     }
 }
