@@ -44,7 +44,7 @@ namespace Domaci_3.Classes
         {
             Console.Clear();
             Console.WriteLine("Kreiranje novog kontakta");
-            bool checkIfNumbersAreSame = false;
+            bool checkIfNumbersAreSame = false, checkIfNamesAreSame=false;
             string firstName, lastName, newPreference, phoneNumber;
             firstName = Functions.Functions.GetUserInput("Unesi ime: ");
             lastName = Functions.Functions.GetUserInput("Unesi prezime: ");
@@ -57,7 +57,13 @@ namespace Domaci_3.Classes
             newPreference = Functions.Functions.GetUserInput("Unesi preferencu: ");
 
             Enum.TryParse<ContactPreference>(newPreference, out ContactPreference novaPreferenca);
-                
+
+            foreach (Contact contact in contacts)
+            {
+                if ((firstName+lastName).ToLower().Equals((contact.FirstName+contact.LastName).ToLower()))
+                    checkIfNamesAreSame = true;
+            }
+
             foreach (Contact contact in contacts)
             {
                 if (phoneNumber.Equals(contact.MobilePhone))
@@ -67,14 +73,30 @@ namespace Domaci_3.Classes
             {
                 if (!checkIfNumbersAreSame)
                 {
-                    contacts.Add(new Contact(firstName, lastName, phoneNumber, novaPreferenca));
+                    if(!checkIfNamesAreSame) 
+                    {
+                        contacts.Add(new Contact(firstName, lastName, phoneNumber, novaPreferenca));
 
-                    Console.Clear() ;
-                    Console.WriteLine("Dodan je kontakt.");
-                    Console.WriteLine("| Ime     | Prezime   | Broj telefona | Preference |");
-                    Console.WriteLine("|---------|-----------|---------------|------------|");
-                    Console.WriteLine($"| {firstName,-7} | {lastName,-9} | {phoneNumber,-13} | {newPreference,-10} |");
+                        Console.Clear();
+                        Console.WriteLine("Dodan je kontakt.");
+                        Console.WriteLine("| Ime     | Prezime   | Broj telefona | Preference |");
+                        Console.WriteLine("|---------|-----------|---------------|------------|");
+                        Console.WriteLine($"| {firstName,-7} | {lastName,-9} | {phoneNumber,-13} | {novaPreferenca,-10} |");
 
+                        Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Postoji kontakt sa istim imenom i prezimenom");
+                        Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
+                        Console.ReadKey();
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("Postoji kontakt sa istim telefonskim brojem");
                     Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
                     Console.ReadKey();
                 }
