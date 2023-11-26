@@ -80,39 +80,50 @@ namespace Domaci_3.Classes
             Console.WriteLine("Unesi ime i prezime kontakta kojeg želiš nazvat");
             string firstName = Functions.Functions.GetUserInput("Unesi ime kontakta: ").ToLower();
             string lastName = Functions.Functions.GetUserInput("Unesi prezime kontakta: ").ToLower();
+
+            
             Contact callingContact = contacts.Find(contact => (contact.FirstName + contact.LastName).ToLower() == (firstName + lastName));
             
-            if (Contact.CheckIsNotBlocked(callingContact))
+            if(callingContact != null)
             {
-                if (!CheckForOtherCallsInProgress(audioCalls))
+                if (Contact.CheckIsNotBlocked(callingContact))
                 {
-                    Console.WriteLine("Drugi poziv je u tijeku, pokušajte kasnije.");
-                    Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
-                    Console.ReadKey();
-                    //return null;
+                    if (!CheckForOtherCallsInProgress(audioCalls))
+                    {
+                        Console.WriteLine("Drugi poziv je u tijeku, pokušajte kasnije.");
+                        Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Random random = new Random();
+                        int randomDurationNumber = random.Next(1, 21);
+                        TimeSpan randomDurationTime = TimeSpan.FromSeconds(randomDurationNumber);
+                        DateTime newCallConnectionTime = DateTime.Now;
+
+
+                        AudioCall theMostNewCall = new AudioCall(newCallConnectionTime, randomDurationTime, AudioCallStatus.Zavrsen, callingContact);
+                        audioCalls.Add(theMostNewCall);
+                        Console.WriteLine("Novi poziv stvoren.");
+                        Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
+                        Console.ReadKey();
+                    }
                 }
                 else
                 {
-                    Random random = new Random();
-                    int randomDurationNumber = random.Next(1, 21);
-                    TimeSpan randomDurationTime= TimeSpan.FromSeconds(randomDurationNumber);
-                    DateTime newCallConnectionTime = DateTime.Now;
-
-
-                    AudioCall theMostNewCall = new AudioCall(newCallConnectionTime, randomDurationTime, AudioCallStatus.Zavrsen, callingContact);
-                    audioCalls.Add(theMostNewCall);
-                    Console.WriteLine("Novi poziv stvoren.");
+                    Console.WriteLine("Kontakt je blokiran, odblokiraj te ga");
                     Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
                     Console.ReadKey();
-                }    
+
+                }
             }
             else
             {
-                Console.WriteLine("Kontakt je blokiran, odblokiraj te ga");
+                Console.WriteLine("Kontakt ne postoji");
                 Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
                 Console.ReadKey();
-
             }
+            
             
         }
     }
