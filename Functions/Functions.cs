@@ -1,4 +1,7 @@
-﻿namespace Domaci_3.Functions
+﻿using Domaci_3.Classes;
+using Domaci_3.Functions.FunctionsMenu;
+
+namespace Domaci_3.Functions
 {
     public class Functions
     {
@@ -37,5 +40,8 @@
             else
                 return false;
         }
+
+
+        
     }
 }
