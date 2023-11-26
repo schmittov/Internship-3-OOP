@@ -20,34 +20,42 @@ List<Contact> contacts = new()
 };
 List<AudioCall> audioCalls = new()
 {
-    new AudioCall(DateTime.Now.AddSeconds(-20), TimeSpan.FromSeconds(5), AudioCallStatus.Zavrsen, contacts[0]),
     new AudioCall(DateTime.Now.AddSeconds(-40), TimeSpan.FromSeconds(10), AudioCallStatus.Propusten, contacts[1]),
-    new AudioCall(DateTime.Now.AddSeconds(-100), TimeSpan.FromSeconds(7), AudioCallStatus.Zavrsen, contacts[2])
+    new AudioCall(DateTime.Now.AddSeconds(-20), TimeSpan.FromSeconds(5), AudioCallStatus.Zavrsen, contacts[0]),
+    new AudioCall(DateTime.Now.AddSeconds(-100), TimeSpan.FromSeconds(7), AudioCallStatus.Zavrsen, contacts[2]),
+    new AudioCall(DateTime.Now.AddSeconds(+5), TimeSpan.FromSeconds(7), AudioCallStatus.Zavrsen, contacts[2])
 
 };
+
+//AudioCall.AllAudioCallsPrint(contacts, audioCalls);
+;
 do
 {
-    AudioCall.AudioCallListPrint(contacts, audioCalls);
-    Console.ReadKey();
-    AudioCall.MakeACall(contacts, audioCalls);
-    Console.ReadKey();
-
     Console.Clear();
     do
     {
+        Console.Clear();
         Methode.PrintMenuOptions();
         Console.Write("\nOdaberi opciju: ");
-        if (int.TryParse(Console.ReadLine(), out menuSelector) && menuSelector >= 0 && menuSelector <= 6)
+        if (int.TryParse(Console.ReadLine(), out menuSelector) && menuSelector >= 0 && menuSelector <= 4)
+        {
+            Methode.SelectMenuOption(contacts, audioCalls, menuSelector);
+        }
+        else if (menuSelector == 5)
+        {
+            Console.Clear();
+            Methode.PrintSubMenuOptions();
+            Console.Write("\nOdaberi podopciju: ");
+            int subMenuSelector=int.Parse(Console.ReadLine()); 
+            Methode.SelectSubMenuOption(contacts, audioCalls, subMenuSelector);
             break;
-        else if(menuSelector==7)
+        }
+        else if (menuSelector == 6)
+            AudioCall.AllAudioCallsPrint(contacts, audioCalls);
+        else if (menuSelector == 7)
             Environment.Exit(0);
         else
             Console.Clear();
     } while (true);
-
-    Contact.SelectMenuOption(contacts, menuSelector);
-
-    Console.WriteLine("Klikni enter");
-    Console.ReadKey();
 } while(true);
 
