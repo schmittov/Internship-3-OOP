@@ -1,10 +1,9 @@
 ﻿using Domaci_3.Enums;
-using Domaci_3.Functions.FunctionsMenu;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domaci_3.Classes
 {
-    internal class Contact
+    public class Contact
     {
         public Guid Id { get; }
         public string FirstName { get; set; }
@@ -28,16 +27,23 @@ namespace Domaci_3.Classes
 
         public static void PrintContacts(List<Contact> contacts)
         {
+            Console.Clear();
             Console.WriteLine("| Ime     | Prezime   | Broj telefona | Preference |");
             Console.WriteLine("|---------|-----------|---------------|------------|");
             foreach (var contact in contacts)
             {
                 Console.WriteLine($"| {contact.FirstName,-7} | {contact.LastName,-9} | {contact.MobilePhone,-13} | {contact.Preference,-10} |");
             }
+
+            Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
+            Console.ReadKey();
+            
         }
 
         public static void AddNewContact(List<Contact> contacts) //potencijalno dodaj bolje uvjete za unos podataka
         {
+            Console.Clear();
+            Console.WriteLine("Kreiranje novog kontakta");
             bool checkIfNumbersAreSame = false;
             string firstName, lastName, newPreference, phoneNumber;
             firstName = Functions.Functions.GetUserInput("Unesi ime: ");
@@ -62,10 +68,12 @@ namespace Domaci_3.Classes
                 Console.Clear();
                 Console.WriteLine("Odustali ste od radnje.");
             }
+            
         }
         public static void DeleteContact(List<Contact> contacts)
         {
             PrintContacts(contacts);
+            Console.WriteLine("Odaberite kontakt za brisanje.");
             string firstName, lastName;
             firstName = Functions.Functions.GetUserInput("Unesi ime kontakta: ").ToLower();
             lastName = Functions.Functions.GetUserInput("Unesi prezime kontakta: ").ToLower();
@@ -94,7 +102,8 @@ namespace Domaci_3.Classes
         public static void EditContactPreference(List<Contact> contacts)
         {
             PrintContacts(contacts);
-            Console.WriteLine("\nOdaberite kontakt");
+            Console.Write("\nOdaberite kontakt za urediti.");
+
 
             string firstName, lastName, newPreference;
             firstName = Functions.Functions.GetUserInput("Unesi ime kontakta: ").ToLower();
@@ -121,16 +130,6 @@ namespace Domaci_3.Classes
                 Console.WriteLine("Odustali ste od radnje.");
             } 
         }
-        public static void SelectMenuOption(List<Contact> contacts, int x)
-        {
-            if (x == 1) PrintContacts(contacts);
-            else if (x == 2) AddNewContact(contacts);
-            else if (x == 3) DeleteContact(contacts);
-            else if (x == 4) EditContactPreference(contacts);
-            else if (x == 5)
-            {
-                Methode.PrintSubMenuOptions();
-            }
-        }
+        
     }
 }
