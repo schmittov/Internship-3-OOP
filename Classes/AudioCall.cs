@@ -48,7 +48,6 @@ namespace Domaci_3.Classes
             foreach (var audioCall in audioCalls)
             {              
                 Console.WriteLine($"| {audioCall.Contact.FirstName,-7} | {audioCall.Contact.LastName,-9} | {audioCall.Contact.MobilePhone,-9} | {audioCall.CallConnectionTime,-15} | {audioCall.Duration,-8} |");
-                //Console.WriteLine("zavrsetak"+audioCall.CallConnectionTime.Add(audioCall.Duration));
             }
             Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
             Console.ReadKey();
@@ -105,7 +104,6 @@ namespace Domaci_3.Classes
                     Console.WriteLine("Novi poziv stvoren.");
                     Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
                     Console.ReadKey();
-                    //return theMostNewCall;
                 }    
             }
             else
@@ -113,7 +111,6 @@ namespace Domaci_3.Classes
                 Console.WriteLine("Kontakt je blokiran, odblokiraj te ga");
                 Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
                 Console.ReadKey();
-                //return null;
 
             }
             
