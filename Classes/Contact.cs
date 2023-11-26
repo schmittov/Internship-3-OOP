@@ -35,7 +35,7 @@ namespace Domaci_3.Classes
                 Console.WriteLine($"| {contact.FirstName,-7} | {contact.LastName,-9} | {contact.MobilePhone,-13} | {contact.Preference,-10} |");
             }
 
-            Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
+            Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
             Console.ReadKey();
             
         }
@@ -61,12 +61,28 @@ namespace Domaci_3.Classes
             if (Functions.Functions.ConfirmTheAction())
             {
                 if (!checkIfNumbersAreSame)
+                {
                     contacts.Add(new Contact(firstName, lastName, phoneNumber, novaPreferenca));
+
+                    Console.Clear() ;
+                    Console.WriteLine("Dodan je kontakt.");
+                    Console.WriteLine("| Ime     | Prezime   | Broj telefona | Preference |");
+                    Console.WriteLine("|---------|-----------|---------------|------------|");
+                    Console.WriteLine($"| {firstName,-7} | {lastName,-9} | {phoneNumber,-13} | {newPreference,-10} |");
+
+                    Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
+                    Console.ReadKey();
+                }
+                    
+
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine("Odustali ste od radnje.");
+                Console.WriteLine("Odustali ste od radnje.\n");
+
+                Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
+                Console.ReadKey();
             }
             
         }
@@ -75,34 +91,42 @@ namespace Domaci_3.Classes
             PrintContacts(contacts);
             Console.WriteLine("Odaberite kontakt za brisanje.");
             string firstName, lastName;
-            firstName = Functions.Functions.GetUserInput("Unesi ime kontakta: ").ToLower();
-            lastName = Functions.Functions.GetUserInput("Unesi prezime kontakta: ").ToLower();
-            Contact deletedContact = contacts.Find(contact => (contact.FirstName + contact.LastName).ToLower() == (firstName + lastName));
+            firstName = Functions.Functions.GetUserInput("Unesi ime kontakta: ");
+            lastName = Functions.Functions.GetUserInput("Unesi prezime kontakta: ");
+            Contact deletedContact = contacts.Find(contact => (contact.FirstName + contact.LastName).ToLower() == (firstName + lastName).ToLower());
 
-            Console.Clear();
-            if (Functions.Functions.ConfirmTheAction())
+            
+            if (deletedContact != null)
             {
-                if (deletedContact != null)
+                if (Functions.Functions.ConfirmTheAction()) 
                 {
+                    Console.Clear();
+                    Console.Write("Izbrisan je kontakt ");
+                    Console.WriteLine($"{deletedContact.FirstName} {deletedContact.LastName} Broj: {deletedContact.MobilePhone}");
+                    Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
+                    Console.ReadKey();  
                     contacts.Remove(deletedContact);
-                    Console.WriteLine("Ažurirani kontakti.");
-                    PrintContacts(contacts);
                 }
                 else
                 {
-                    Console.WriteLine("Ne postoji takav kontakt.");
+                    Console.Clear();
+                    Console.WriteLine("Odustali ste od radnje.");
+                    Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
+                    Console.ReadKey();
                 }
             }
             else
             {
-                Console.Clear();
-                Console.WriteLine("Odustali ste od radnje.");
+                Console.WriteLine("Ne postoji kontakt pod nazivom "+firstName+" "+lastName);
+
+                Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
+                Console.ReadKey();
             }
         }
         public static void EditContactPreference(List<Contact> contacts)
         {
             PrintContacts(contacts);
-            Console.Write("\nOdaberite kontakt za urediti.");
+            Console.WriteLine("\nOdaberite kontakt za urediti.");
 
 
             string firstName, lastName, newPreference;
