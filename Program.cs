@@ -4,7 +4,7 @@ using Domaci_3.Functions.FunctionsMenu;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
 
-int menuSelector;
+int menuSelector,subMenuSelector;
 List<Contact> contacts = new()
 {
     new Contact("John",     "Doe",      "555-1234", ContactPreference.normalan),
@@ -44,11 +44,23 @@ do
         else if (menuSelector == 5)
         {
             Console.Clear();
-            Methode.PrintSubMenuOptions();
-            Console.Write("\nOdaberi podopciju: ");
-            int subMenuSelector=int.Parse(Console.ReadLine()); 
-            Methode.SelectSubMenuOption(contacts, audioCalls, subMenuSelector);
-            break;
+
+            do
+            {
+                Console.Clear();
+                Methode.PrintSubMenuOptions();
+                Console.Write("Odaberi podopciju: ");
+                if (int.TryParse(Console.ReadLine(), out subMenuSelector) && subMenuSelector >= 0 && subMenuSelector <= 3)
+                {
+                    Methode.SelectSubMenuOption(contacts, audioCalls, subMenuSelector);
+                    break;
+                }
+                else
+                {
+
+                }
+            }
+            while (true);
         }
         else if (menuSelector == 6)
             AudioCall.AllAudioCallsPrint(contacts, audioCalls);
