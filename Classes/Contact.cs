@@ -48,7 +48,12 @@ namespace Domaci_3.Classes
             string firstName, lastName, newPreference, phoneNumber;
             firstName = Functions.Functions.GetUserInput("Unesi ime: ");
             lastName = Functions.Functions.GetUserInput("Unesi prezime: ");
-            phoneNumber = Functions.Functions.GetUserInput("Unesi broj: ");
+            do
+            {
+                phoneNumber = Functions.Functions.GetUserInput("Unesi broj formata xxx-xxxx: ");
+            }
+            while (!Functions.Functions.IsPhoneNumberFormatCorrect(phoneNumber));
+
             newPreference = Functions.Functions.GetUserInput("Unesi preferencu: ");
 
             Enum.TryParse<ContactPreference>(newPreference, out ContactPreference novaPreferenca);

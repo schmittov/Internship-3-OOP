@@ -1,5 +1,6 @@
 ﻿using Domaci_3.Classes;
 using Domaci_3.Functions.FunctionsMenu;
+using System.Text.RegularExpressions;
 
 namespace Domaci_3.Functions
 {
@@ -40,8 +41,21 @@ namespace Domaci_3.Functions
             else
                 return false;
         }
+        public static bool IsPhoneNumberFormatCorrect(string phoneNumber) //nađeno na stackoverflow-u ne znam bili ovo spadalo pod neobrađeno gradivo
+        {
+            string pattern = @"^\d{3}-\d{4}$";
+
+            if (Regex.IsMatch(phoneNumber, pattern)) 
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Neispravan format broja.");
+                return false;
+            }
+        }
 
 
-        
     }
 }
