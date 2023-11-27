@@ -18,7 +18,20 @@ namespace Domaci_3.Classes
             AudioCallStatuses = audioCallStatuses;
             Contact = contact;
         }
-
+        public static Enum AudioCallStatusChooser()
+        {
+            Random randomCallStatus = new Random();
+            int randomCallStatusNumber = randomCallStatus.Next(0, 2);
+            
+            if (randomCallStatusNumber == 0) 
+            {
+                return AudioCallStatus.Traje;
+            }
+            else 
+            {
+                return AudioCallStatus.Propusten;
+            }
+        }
         public static bool CheckForOtherCallsInProgress(List<AudioCall> audioCalls)
         {
             int i=0;
@@ -31,23 +44,25 @@ namespace Domaci_3.Classes
             }
             if (i > 0)
             {
-                Console.WriteLine("Nemoze");
                 return false;
             }
             else
             {
-                Console.WriteLine("Moze");
                 return true;
             }
         }
         public static void AllAudioCallsPrint(List<Contact> contacts, List<AudioCall> audioCalls)
         {
-            Console.WriteLine("|  Ime    | Prezime   |   Broj    |   Vrijeme spajanja  | Trajanje |");
-            Console.WriteLine("|---------|-----------|-----------|---------------------|----------|");
+            Console.WriteLine("|  Ime    | Prezime   |   Broj    |   Vrijeme spajanja  |  Trajanje |   Status  |");
+            Console.WriteLine("|---------|-----------|-----------|---------------------|-----------|-----------|");
 
             foreach (var audioCall in audioCalls)
-            {              
-                Console.WriteLine($"| {audioCall.Contact.FirstName,-7} | {audioCall.Contact.LastName,-9} | {audioCall.Contact.MobilePhone,-9} | {audioCall.CallConnectionTime,-15} | {audioCall.Duration,-8} |");
+            {
+                if ((audioCall.CallConnectionTime.Add(audioCall.Duration)) < DateTime.Now)
+                    if(audioCall.AudioCallStatuses==AudioCallStatus.Traje)
+                        audioCall.AudioCallStatuses = AudioCallStatus.Zavrsen;
+                
+                Console.WriteLine($"| {audioCall.Contact.FirstName,-7} | {audioCall.Contact.LastName,-9} | {audioCall.Contact.MobilePhone,-9} | {audioCall.CallConnectionTime,-15} | {audioCall.Duration,-8} | {audioCall.AudioCallStatuses,-9} |");
             }
             Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
             Console.ReadKey();
@@ -81,7 +96,6 @@ namespace Domaci_3.Classes
             string firstName = Functions.Functions.GetUserInput("Unesi ime kontakta: ").ToLower();
             string lastName = Functions.Functions.GetUserInput("Unesi prezime kontakta: ").ToLower();
 
-            
             Contact callingContact = contacts.Find(contact => (contact.FirstName + contact.LastName).ToLower() == (firstName + lastName));
             
             if(callingContact != null)
@@ -96,13 +110,17 @@ namespace Domaci_3.Classes
                     }
                     else
                     {
-                        Random random = new Random();
-                        int randomDurationNumber = random.Next(1, 21);
+                        var newCallStatus = (AudioCallStatus)AudioCallStatusChooser();
+                        
+                        Random randomDuration = new Random();
+                        int randomDurationNumber = randomDuration.Next(1, 21);
                         TimeSpan randomDurationTime = TimeSpan.FromSeconds(randomDurationNumber);
                         DateTime newCallConnectionTime = DateTime.Now;
+                        
+                        if(newCallStatus==AudioCallStatus.Propusten)
+                            randomDurationTime = TimeSpan.FromSeconds(0);
 
-
-                        AudioCall theMostNewCall = new AudioCall(newCallConnectionTime, randomDurationTime, AudioCallStatus.Zavrsen, callingContact);
+                        AudioCall theMostNewCall = new AudioCall(newCallConnectionTime, randomDurationTime, newCallStatus, callingContact);
                         audioCalls.Add(theMostNewCall);
                         Console.WriteLine("Novi poziv stvoren.");
                         Console.WriteLine("Pritisnite bilo koju tipku za nastaviti.");
