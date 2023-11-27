@@ -1,8 +1,6 @@
 ﻿using Domaci_3.Classes;
 using Domaci_3.Enums;
 using Domaci_3.Functions.FunctionsMenu;
-using System.Diagnostics.Contracts;
-using System.Reflection.Metadata;
 
 int menuSelector,subMenuSelector;
 List<Contact> contacts = new()
@@ -20,15 +18,12 @@ List<Contact> contacts = new()
 };
 List<AudioCall> audioCalls = new()
 {
-    new AudioCall(DateTime.Now.AddSeconds(-40), TimeSpan.FromSeconds(10), AudioCallStatus.Propusten, contacts[1]),
+    new AudioCall(DateTime.Now.AddSeconds(-40), TimeSpan.FromSeconds(0), AudioCallStatus.Propusten, contacts[1]),
     new AudioCall(DateTime.Now.AddSeconds(-20), TimeSpan.FromSeconds(5), AudioCallStatus.Zavrsen, contacts[0]),
     new AudioCall(DateTime.Now.AddSeconds(-100), TimeSpan.FromSeconds(7), AudioCallStatus.Zavrsen, contacts[2]),
-    new AudioCall(DateTime.Now.AddSeconds(+5), TimeSpan.FromSeconds(7), AudioCallStatus.Zavrsen, contacts[2])
-
+    new AudioCall(DateTime.Now.AddSeconds(0), TimeSpan.FromSeconds(20), AudioCallStatus.Traje, contacts[2])
 };
 
-//AudioCall.AllAudioCallsPrint(contacts, audioCalls);
-;
 do
 {
     Console.Clear();
@@ -54,11 +49,7 @@ do
                 {
                     Methode.SelectSubMenuOption(contacts, audioCalls, subMenuSelector);
                     break;
-                }
-                else
-                {
-
-                }
+                }  
             }
             while (true);
         }
