@@ -22,7 +22,7 @@ namespace Domaci_3.Classes
         }
         public static bool CheckIsNotBlocked(Contact contact)
         {
-            return (contact.Preference != ContactPreference.blokiran);
+              return (contact.Preference != ContactPreference.blokiran);
         }
 
         public static void PrintContacts(List<Contact> contacts)
@@ -54,9 +54,10 @@ namespace Domaci_3.Classes
             }
             while (!Functions.Functions.IsPhoneNumberFormatCorrect(phoneNumber));
 
+            
             newPreference = Functions.Functions.GetUserInput("Unesi preferencu: ");
 
-            Enum.TryParse<ContactPreference>(newPreference, out ContactPreference novaPreferenca);
+            Enum.TryParse<ContactPreference>(newPreference, out ContactPreference newPreferenceChecked);
 
             foreach (Contact contact in contacts)
             {
@@ -75,13 +76,13 @@ namespace Domaci_3.Classes
                 {
                     if(!checkIfNamesAreSame) 
                     {
-                        contacts.Add(new Contact(firstName, lastName, phoneNumber, novaPreferenca));
+                        contacts.Add(new Contact(firstName, lastName, phoneNumber, newPreferenceChecked));
 
                         Console.Clear();
                         Console.WriteLine("Dodan je kontakt.");
                         Console.WriteLine("| Ime     | Prezime   | Broj telefona | Preference |");
                         Console.WriteLine("|---------|-----------|---------------|------------|");
-                        Console.WriteLine($"| {firstName,-7} | {lastName,-9} | {phoneNumber,-13} | {novaPreferenca,-10} |");
+                        Console.WriteLine($"| {firstName,-7} | {lastName,-9} | {phoneNumber,-13} | {newPreferenceChecked,-10} |");
 
                         Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
                         Console.ReadKey();
@@ -171,6 +172,8 @@ namespace Domaci_3.Classes
                         {
                             contact.Preference = enumPreference;
                             Console.WriteLine("Preferenca uspješno ažurirana.");
+                            Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
+                            Console.ReadKey();
                         }
                     }
                 }
@@ -179,6 +182,8 @@ namespace Domaci_3.Classes
             {
                 Console.Clear();
                 Console.WriteLine("Odustali ste od radnje.");
+                Console.WriteLine("\nPritisnite bilo koju tipku za nastaviti.");
+                Console.ReadKey();
             } 
         }
         

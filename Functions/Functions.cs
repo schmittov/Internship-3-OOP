@@ -1,6 +1,4 @@
-﻿using Domaci_3.Classes;
-using Domaci_3.Functions.FunctionsMenu;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Domaci_3.Functions
 {
@@ -55,7 +53,6 @@ namespace Domaci_3.Functions
                 return false;
             }
         }
-
-
+        
     }
 }
